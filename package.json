@@ -15,6 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "react-native-navbar": "https://github.com/cncowboy/react-native-navbar.git",
-    "react-native-tabs": "malkomalko/react-native-tabs"
+    "react-native-tabs": "^1.0.8"
   }
 }
