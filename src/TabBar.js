@@ -33,7 +33,7 @@ const tabContainerStyle = () => ({
 });
 
 const textStyle = props => ({
-  color: props.selectionColor || '#929292',
+  color: props.selectionColor || props.tabStyles.normalTint || '#929292',
   fontSize: 10,
   letterSpacing: 0.2,
   marginBottom: 2,
@@ -42,13 +42,17 @@ const textStyle = props => ({
 
 class TabBarIcon extends Component {
   render() {
-    const { name, tabItem } = this.props;
+    const { name, tabItem, activeTab } = this.props;
+    let icon = tabItem.icon;
+    if (name === activeTab){
+      icon = tabItem.selIcon;
+    }
 
     return (
       <View name={name} style={tabContainerStyle()}>
         {tabItem.icon &&
           <Image
-            source={tabItem.icon}
+            source={icon}
             style={imageStyle(this.props)}
             />
         }
