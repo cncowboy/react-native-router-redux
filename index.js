@@ -214,7 +214,10 @@ class Router extends React.Component {
           />
       );
     } else {
-      child = React.Children.only(this.routes[route.name].children);
+      if (this.routes[route.name].children)
+      {
+        child = React.Children.only(this.routes[route.name].children);
+      }
       child = React.cloneElement(child, {schemas: this.schemas});
     }
 
