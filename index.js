@@ -86,6 +86,10 @@ class Router extends React.Component {
         this.tabStyles[tabBarName] = {
           barTint: child.props.barTint,
           tint: child.props.tint,
+          normalTint: child.props.normalTint,
+          ignoreIconTint: child.props.ignoreIconTint,
+          borderTopColor: child.props.borderTopColor,
+          borderTopWidth: child.props.borderTopWidth,
         };
         actions.routes[tabBarName] = {};
         React.Children.forEach(child.props.children, (tabChild, tabIndex) => {
@@ -214,10 +218,7 @@ class Router extends React.Component {
           />
       );
     } else {
-      if (this.routes[route.name].children)
-      {
-        child = React.Children.only(this.routes[route.name].children);
-      }
+      child = React.Children.only(this.routes[route.name].children);
       child = React.cloneElement(child, {schemas: this.schemas});
     }
 

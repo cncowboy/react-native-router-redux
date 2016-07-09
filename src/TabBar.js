@@ -14,31 +14,48 @@ const onSelect = props => el => {
   };
 };
 
-const imageStyle = props => ({
-  height: 25,
-  resizeMode: 'contain',
-  tintColor: props.selectionColor || '#929292',
-  width: 30,
-});
+const imageStyle = props => {
+  let obj = {
+    height: 25,
+    resizeMode: 'contain',
+    width: 30,
+  }
+  if (!props.tabStyles.ignoreIconTint)
+  {
+    obj.tintColor = props.selectionColor || '#929292';
+  }
+  return obj;
+};
 
-const tabBarStyle = props => ({
-  backgroundColor: props.tabStyles.barTint || '#F9F9F9',
-  borderTopColor: '#D8D8D8',
-  borderTopWidth: 1,
-});
+const tabBarStyle = props => {
+  let obj = {
+    backgroundColor: props.tabStyles.barTint || '#F9F9F9',
+    borderTopColor: props.tabStyles.borderTopColor || '#D8D8D8',
+    borderTopWidth: props.tabStyles.borderTopWidth || 1,
+  };
+  if (props.tabStyles.borderTopWidth===0) obj.borderTopWidth = 0;
+  return obj;
+};
 
 const tabContainerStyle = () => ({
   alignItems: 'center',
   justifyContent: 'center',
 });
 
-const textStyle = props => ({
-  color: props.selectionColor || props.tabStyles.normalTint || '#929292',
-  fontSize: 10,
-  letterSpacing: 0.2,
-  marginBottom: 2,
-  marginTop: 4,
-});
+const textStyle = props => {
+  let obj = {
+    color: props.tabStyles.normalTint || '#929292',
+    fontSize: 10,
+    letterSpacing: 0.2,
+    marginBottom: 2,
+    marginTop: 4,
+  };
+  if (props.name===props.activeTab)
+  {
+    obj.color = props.tabStyles.tint || '#929292';
+  }
+  return obj;
+};
 
 class TabBarIcon extends Component {
   render() {
@@ -48,16 +65,17 @@ class TabBarIcon extends Component {
       icon = tabItem.selIcon;
     }
 
+    const txtStyle = textStyle(this.props);
     return (
       <View name={name} style={tabContainerStyle()}>
-        {tabItem.icon &&
+        {icon &&
           <Image
             source={icon}
             style={imageStyle(this.props)}
             />
         }
         {tabItem.title &&
-          <Text style={textStyle(this.props)}>{tabItem.title}</Text>
+          <Text style={txtStyle}>{tabItem.title}</Text>
         }
       </View>
     );
@@ -71,7 +89,7 @@ export default class TabBar extends Component {
   }
 
   render() {
-    const { tabs } = this.props;
+    const { tabs, activeTab } = this.props;
 
     const tabBarItems = Object.keys(tabs).map(tabName => {
       const tab = tabs[tabName];
@@ -82,6 +100,7 @@ export default class TabBar extends Component {
           key={tabName}
           name={tabName}
           tabItem={tabItem}
+          activeTab={activeTab}
           tabStyles={this.props.tabStyles}
           />
       );
